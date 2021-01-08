@@ -22,6 +22,7 @@ Route::get('/Proyecciones','proyecciones_controller@index');
 Route::get('/InteligenciaMercado','inteligenciaMercado_controller@index');
 Route::get('/InvTotalizado','inventario_controller@inventarioTotalizado');
 Route::get('/VtsProyectos','ventasProyectos_controller@index');
+Route::get('/recuProyectos','recupProyectos_controller@index');
 Route::get('/MinutasCorporativas','minutasCorp_controller@index');
 
 //RUTAS LOGIN
@@ -111,3 +112,6 @@ Route::post('/dowloadComents', 'inteligenciaMercado_controller@descargarComentar
 
 //RUTAS VENTAS POR PROYECTOS
 Route::get('/dataVTS','ventasProyectos_controller@comparateDateVentas');
+
+//RUTAS RECUPERACION POR PROYECTOS
+Route::get('/dataRECUP','recupProyectos_controller@comparateDateRecup');

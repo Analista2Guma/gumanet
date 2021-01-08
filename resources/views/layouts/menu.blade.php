@@ -37,6 +37,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link text-secondary" href="recuProyectos">
+              <span data-feather="layers" class="mr-3"></span>
+              Recu por Proyectos
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link text-secondary" href="Inventario">
               <span data-feather="truck" class="mr-3"></span>
               Inventario
