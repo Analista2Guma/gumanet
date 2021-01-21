@@ -49,37 +49,63 @@ class recupProyectos_model extends Model {
 		
 
 		foreach ( $proyectos as $proyecto ) {
-			$dtlles = proyectosDetalle_model::select('rutas.vendedor','rutas.nombre','rutas.zona')
-                ->join('rutas', 'proyectos_rutas.ruta_id', '=', 'rutas.id')
-                ->where('proyectos_rutas.proyecto_id', $proyecto['id'])
-                ->where('rutas.estado', 1)
-                ->get();
-
-			foreach ( $dtlles as $fila ) {
-				if( array_search( $fila['nombre'], array_column( $json, 'nombre' ) ) === false) {
-					$ruta = $fila['vendedor'];
-					$nombre = $fila['nombre'];
-					$temp = array_filter( $query, function($item) use($nombre) { return $item['NOMBRE']==$nombre; } );
 
 
-					$json[$i]['ruta'] 			= $fila['vendedor'];
-					$json[$i]['nombre'] 		= $fila['nombre'];
-					$json[$i]['groupColumn'] 	= $proyecto['name'];
-					$json[$i]['zona'] 			= $fila['zona'];
-					$json[$i]['data'] 			= array(
-													'mes1' => array(
-														'anioActual' => array_sum(array_column(array_filter( $temp, function($item) use($mes1, $anio1) { return $item['nMes']==$mes1 and $item['ANIO']==$anio1; } ),'RECUPERADO')),
-														'anioAnterior' => array_sum(array_column(array_filter( $temp, function($item) use($mes1, $anio2) { return $item['nMes']==$mes1 and $item['ANIO']==$anio2; } ),'RECUPERADO'))
-													),
-													'mes2' => array(
-														'anioActual' => array_sum(array_column(array_filter( $temp, function($item) use($mes2, $anio1) { return $item['nMes']==$mes2 and $item['ANIO']==$anio1; } ),'RECUPERADO')),
-														'anioAnterior' => array_sum(array_column(array_filter( $temp, function($item) use($mes2, $anio2) { return $item['nMes']==$mes2 and $item['ANIO']==$anio2; } ),'RECUPERADO'))
-													),
-												);
+            //if($proyecto['name'] != 'Grupo_1'){// si se desea agregar al grupo uno, se debe de eliminar esta condición
+				$dtlles = proyectosDetalle_model::select('rutas.vendedor','rutas.nombre','rutas.zona')
+	                ->join('rutas', 'proyectos_rutas.ruta_id', '=', 'rutas.id')
+	                ->where('proyectos_rutas.proyecto_id', $proyecto['id'])
+	                ->where('rutas.estado', 1) 
+	                //->whereNotIn('rutas.vendedor', ['F02,F04'])
+	                ->get();
 
-					$i++;
+
+                //dd($dtlles);
+				foreach ( $dtlles as $fila ) {
+					if( array_search( $fila['vendedor'], array_column( $json, 'ruta' ) ) === false) {//Encuentra en que posicion esta el dato a buscar en un array, y array column encuentra los valores dentro de los nombres de valores y los muestra soamente a ellos 
+
+
+						$ruta = $fila['vendedor'];
+						$nombre = $fila['nombre'];
+						$temp = array_filter( $query, function($item) use($ruta) { return $item['RUTA']==$ruta; } );
+
+						if($fila['vendedor'] == 'F17'){// Se omite Ruta F17, Todo los datos de la Ruta 'F17' se suman a Ruta F02 (Institucional) 
+
+
+							$indexF02 = array_search( 'F02', array_column( $json, 'ruta' ) );
+							//dd($indexF02);
+							
+							$json[$indexF02]['data']['mes1']['anioActual']  +=  array_sum(array_column(array_filter( $temp, function($item) use($mes1, $anio1) { return $item['nMes']==$mes1 and $item['ANIO']==$anio1; } ),'RECUPERADO'));
+							$json[$indexF02]['data']['mes1']['anioAnterior'] += array_sum(array_column(array_filter( $temp, function($item) use($mes1, $anio2) { return $item['nMes']==$mes1 and $item['ANIO']==$anio2; } ),'RECUPERADO'));
+																
+							$json[$indexF02]['data']['mes2']['anioActual'] += array_sum(array_column(array_filter( $temp, function($item) use($mes2, $anio1) { return $item['nMes']==$mes2 and $item['ANIO']==$anio1; } ),'RECUPERADO'));
+							$json[$indexF02]['data']['mes2']['anioAnterior'] +=  array_sum(array_column(array_filter( $temp, function($item) use($mes2, $anio2) { return $item['nMes']==$mes2 and $item['ANIO']==$anio2; } ),'RECUPERADO'));
+										
+							
+						}else{
+
+
+							$json[$i]['ruta'] 			= $fila['vendedor'];
+							$json[$i]['nombre'] 		= $fila['nombre'];
+							$json[$i]['groupColumn'] 	= $proyecto['name'];
+							$json[$i]['zona'] 			= $fila['zona'];
+							$json[$i]['data'] 			= array(
+																'mes1' => array(
+																	'anioActual' => array_sum(array_column(array_filter( $temp, function($item) use($mes1, $anio1) { return $item['nMes']==$mes1 and $item['ANIO']==$anio1; } ),'RECUPERADO')),
+																	'anioAnterior' => array_sum(array_column(array_filter( $temp, function($item) use($mes1, $anio2) { return $item['nMes']==$mes1 and $item['ANIO']==$anio2; } ),'RECUPERADO'))
+																),
+																'mes2' => array(
+																	'anioActual' => array_sum(array_column(array_filter( $temp, function($item) use($mes2, $anio1) { return $item['nMes']==$mes2 and $item['ANIO']==$anio1; } ),'RECUPERADO')),
+																	'anioAnterior' => array_sum(array_column(array_filter( $temp, function($item) use($mes2, $anio2) { return $item['nMes']==$mes2 and $item['ANIO']==$anio2; } ),'RECUPERADO'))
+																),
+															);
+							$i++;
+						}
+
+						
+					}
 				}
-			}
+			//}
 		}
 		//$sql_server->close();
 		//dd($json);

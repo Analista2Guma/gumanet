@@ -18,53 +18,28 @@
           <div class="row">
             <div class="col-sm-8">
               <h5 class="card-title">Comparar</h5>
+               <p class="font-italic text-muted pt-0 mt-0">Devuelve los registros comparandolos con un mes y un año anterior</p>
               <div class="row">
                 <div class="col-sm-4">
                   <div class="form-group">                    
                     <select class="form-control form-control-sm float-right d-block" id="cmbMes1">
                       <option value="all">Todos</option>
                       <?php
-                        setlocale(LC_ALL, 'es_ES');
                         $mes = date("m");
+                        $meses = array('none','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre');
 
                         for ($i= 1; $i <= 12 ; $i++) {
-                          $dateObj   = DateTime::createFromFormat('!m', $i);
-                          $monthName = strftime('%B', $dateObj->getTimestamp());
-
                           if ($i==$mes) {
-                            echo'<option selected value="'.$i.'">'.$monthName.'</option>';
+                            echo'<option selected value="'.$i.'">'.$meses[$i].'</option>';
                           }else {
-                            echo'<option value="'.$i.'">'.$monthName.'</option>';
+                            echo'<option value="'.$i.'">'.$meses[$i].'</option>';
                           }
                         }
                       ?>
                     </select>
                   </div>
                 </div>
-                <div class="col-sm-1 text-center mt-2 p-0 m-0">
-                  <span class="text-muted mt-5">Contra</span>
-                </div>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <select class="form-control form-control-sm float-right d-block" id="cmbMes2">
-                      <option value="all">Todos</option>
-                      <?php
-                        setlocale(LC_ALL, 'es_ES');
-                        $mes = date("m");
-                        for ($i= 1; $i <= 12 ; $i++) {
-                          $dateObj   = DateTime::createFromFormat('!m', $i);
-                          $monthName = strftime('%B', $dateObj->getTimestamp());
-
-                          if ($i==$mes) {
-                            echo'<option selected value="'.$i.'">'.$monthName.'</option>';
-                          }else {
-                            echo'<option value="'.$i.'">'.$monthName.'</option>';
-                          }
-                        }
-                      ?>
-                    </select>
-                  </div>
-                </div>
+                
                 <div class="col-sm-3">
                   <div class="form-group">                    
                     <select class="form-control form-control-sm" id="cmbAnio">
@@ -81,10 +56,10 @@
                     </select> 
                   </div> 
                 </div>
+                <div class="col-sm-4">
+                  <a href="#!" class="btn btn-primary float-left" id="compararMeses">Aplicar</a>
+                </div>
               </div>
-            </div>
-            <div class="col-sm-4 pt-2">
-              <a href="#!" class="btn btn-primary mt-4 float-left" id="compararMeses">Aplicar</a>
             </div>
           </div>
         </div>
@@ -103,7 +78,7 @@
                   <th rowspan="2">ZONA</th>
                   <th colspan="3"><span>MES ACTUAL VS ANTERIOR</span></th>
                   <th colspan="3"><span id="lblMesActual">?</span></th>
-                  <th colspan="3"><span id="lblMesAntero">?</span></th>
+                  {{-- <th colspan="3"><span id="lblMesAntero">?</span></th> --}}
               </tr>
               <tr>
                   <th class="text-center"><span id="lblMesActual_">?</span></th>
@@ -112,9 +87,9 @@
                   <th class="text-center"><span class="lblAnioActual">?</span></th>
                   <th class="text-center"><span class="lblAnioAnteri">?</span></th>
                   <th class="text-center">%</th>
-                  <th class="text-center"><span class="lblAnioActual"></span></th>
+                  {{-- <th class="text-center"><span class="lblAnioActual"></span></th>
                   <th class="text-center"><span class="lblAnioAnteri"></span></th>
-                  <th class="text-center">%</th>
+                  <th class="text-center">%</th> --}}
               </tr>
           </thead>
           <tbody>
@@ -128,9 +103,9 @@
                     <th style="padding-right: 10px!important"></th>
                     <th style="padding-right: 10px!important"></th>
                     <th style="padding-right: 10px!important"></th>
+                    {{-- <th style="padding-right: 10px!important"></th>
                     <th style="padding-right: 10px!important"></th>
-                    <th style="padding-right: 10px!important"></th>
-                    <th style="padding-right: 10px!important"></th>
+                    <th style="padding-right: 10px!important"></th> --}}
                 </tr>
             </tfoot>
         </table>
