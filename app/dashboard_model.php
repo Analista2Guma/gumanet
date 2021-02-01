@@ -854,8 +854,8 @@ class dashboard_model extends Model {
 
     //datos de grafica de recuperacion
     public static function getRecuperaMes($mes, $anio) {
-        $otroTipoVende = array('F01','F02','F04','F12','F16','F18','F19');
-        $otroTipoVende_sql_server = "'F01','F02','F04','F12','F16','F18','F19'";
+        $otroTipoVende = array('F01','F12','F16','F18','F19');
+        $otroTipoVende_sql_server = "'F01','F12','F16','F18','F19'";
         $total = 0;
         $sql_server = new \sql_server();
 
@@ -940,8 +940,8 @@ class dashboard_model extends Model {
     //Muestra datos de tabla de detalle de recuperacion
     public static function getRecuRowsByRoutes($mes, $anio, $pageName){
 
-        $otroTipoVende_sql_server = "'F01','F02','F04','F12','F16','F18','F19'";
-        $otroTipoVende = array('F01','F02','F04','F12','F16','F18','F19');
+        $otroTipoVende_sql_server = "'F01','F12','F16','F18','F19'";
+        $otroTipoVende = array('F01','F12','F16','F18','F19');
 
 
         $request = Request();
